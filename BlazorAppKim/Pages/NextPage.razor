@@ -1,0 +1,36 @@
+﻿@*@page "/MyLoginPage"
+<h3>התחבר לאתר</h3>
+
+
+<form>
+    <div class="mb-3">
+        <label for="exampleInputUsername" class="form-label">שם משתמש</label>
+        <input type="text" class="form-control" @bind=username>
+    </div>
+    <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label">סיסמא</label>
+        <input type="password" class="form-control" @bind=pass>
+    </div>
+
+    <button type="submit" class="btn btn-primary" @onclick="LogIn">התחבר</button>
+</form>
+@code {
+  
+  
+    private string username;
+    private string pass;
+    private async void LogIn()
+    {
+        ApiService service = new ApiService();
+        var x = await service.LogIn(username, pass);
+        if (x.IsSuccessStatusCode)
+        {
+            GlobalSettings.login_user = await x.Content.ReadFromJsonAsync<Person>();
+            GlobalSettings.nav.NavigateTo("/");
+            return;
+        }
+
+    }
+
+}
+*@

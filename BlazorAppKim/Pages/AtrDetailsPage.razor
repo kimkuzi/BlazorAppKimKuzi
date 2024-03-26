@@ -1,0 +1,52 @@
+﻿@page "/AtrDetailsPage/{atrId:int}"
+@page "/AtrDetailsPage"
+@inject ApiService service
+
+<h3 class="text-center">פרטי אטרקציה</h3>
+
+@if (attractionToDisplay != null)
+{
+    <div class="col">
+        <h2 class="text-center mb-5 " style="font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;"> אטרקציית @attractionToDisplay.AttractionName</h2>
+        <div class="row text-center">
+           <div class="col-md-6">
+                <img src="@($"data:image /png;base64,{ @attractionToDisplay.Pic}")" alt="Attraction Image" />
+           </div>
+            <div class=" col-md-6" style="font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">
+                <p style="font-size:30px;"><strong>מדינה:</strong>@attractionToDisplay.City.Country.CountryName</p>
+                <p style="font-size:30px;"><strong>עיר::</strong>@attractionToDisplay.City.CityName</p>
+                <p style="font-size:30px;"><strong>כתובת:</strong>@attractionToDisplay.Adress</p>
+                <p style="font-size:30px;"><strong>גיל מינימלי:</strong>@attractionToDisplay.MinAge</p>
+                <p style="font-size:30px;"><strong>דירוג:</strong>@attractionToDisplay.Rate.Stars/5</p>
+                
+
+            </div>
+        </div>
+           
+    </div>
+}
+
+
+
+<style>
+    body{
+        background-color:lightpink;
+    }
+
+</style>
+
+@code {
+    [Parameter]
+    public int atrId { get; set; }
+
+    private AttractionList attractions;
+    private Attraction attractionToDisplay;
+
+    protected async override Task OnInitializedAsync()
+    {
+        attractions = await service.GetAllAttrctions();
+        attractionToDisplay = attractions.Find(x => x.Id == atrId);
+
+
+    }
+}

@@ -1,0 +1,53 @@
+﻿@page "/AttractionPage"
+@inject ApiService service
+@inject NavigationManager nav
+
+
+@if (attractions != null)
+{
+    <div class="container">
+        <h2 class="text-center mb-3">האטרקציות שלנו</h2>
+        <div class="row">
+            @foreach (Attraction atr in attractions)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title text-center">@atr.AttractionName</h5>
+                        </div>
+                        <div class="card-footer">
+                            <img class="card-img-bottom" src="@($"data:image/png;base64,{atr.Pic}")" alt="Attraction Image"/>
+                            <div class="text-center">
+                            <button @onclick="(() => AtrDetails(atr.Id))"  class="btn btn-outline-primary mt-2">הצג פרטי אטרקציה</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}
+
+
+
+<style>
+    body{
+        background-color: lightpink;
+    }
+</style>
+
+@code {
+
+    private AttractionList attractions;
+    private void AtrDetails(int id)
+    {
+        nav.NavigateTo($"/AtrDetailsPage/{id}");
+    }
+    protected async override Task OnInitializedAsync()
+    {
+        attractions = await service.GetAllAttrctions();
+
+    
+           }
+  }
+

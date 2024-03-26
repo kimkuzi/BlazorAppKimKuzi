@@ -1,0 +1,55 @@
+﻿@page "/"
+@inject NavigationManager nav
+<PageTitle>Index</PageTitle>
+
+
+
+<div class="container" style="direction:rtl; margin-top:450px; margin-right:200px;">
+    <button class="btn btn-light btn-lg m-3 special-btn" style="height:100px;width:200px;" @onclick=LoginButton >Login</button>
+    <button class="btn btn-light btn-lg m-3 special-btn" style="height:100px;width:200px;" @onclick=RegisterButton>Register</button>
+
+</div>
+
+<style>
+    body
+    {
+        background-image: url('/trip 4.png');
+        background-size:100% 100%;
+        background-position:center;
+        background-repeat:no-repeat;
+        margin:0;
+        padding:0;
+    }
+    .special-btn {
+        height:100px;
+        width:200px;
+        border-radius:50px;
+        border:none;
+        font-size:1.5rem;
+        font-weight:bold;
+        transition: all 0.3s ease;
+        box-shadow:0px 8px 15px rgba(0,0,0,0.1);
+    }
+     .special-btn:hover{
+         transform:translateY(-5px);
+         box-shadow:0px 15px 20px rgba(0,0,0,0.2)
+     }
+     .btn-light{
+         background-color:aquamarine;
+         color:white;
+     }
+</style>
+
+@code{
+    
+    private void LoginButton()
+    {
+        nav.NavigateTo("/MyLoginPage");
+
+    }
+    private void RegisterButton()
+    {
+        nav.NavigateTo("/MyRegisterPage");
+    }
+
+}

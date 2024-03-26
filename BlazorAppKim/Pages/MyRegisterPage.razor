@@ -1,0 +1,58 @@
+﻿@page "/MyRegisterPage"
+@inject NavigationManager nav
+<h3>הרשמה לאתר</h3>
+
+
+<form>
+    <div class="mb-3">
+        <label for="exampleInputUsername" class="form-label">שם משתמש</label>
+        <input type="text" class="form-control" @bind=username>
+    </div>
+    <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label">סיסמא</label>
+        <input type="password" class="form-control" @bind=pass>
+    </div>
+
+
+</form>
+<button type="submit" class="btn btn-primary" @onclick="Register">הירשם</button>
+<style>
+    body {
+        background-color: palegoldenrod;
+    }
+</style>
+@if (userExist)
+{
+    <h4>user already exist</h4>
+}
+@code {
+
+
+    private string username;
+    private string pass;
+    protected bool userExist;
+    protected override void OnInitialized()
+    {
+        userExist = false ;
+    }
+    private async void Register()
+    {
+        ApiService service = new ApiService();
+        var x = await service.Register(username, pass);
+        if (x.IsSuccessStatusCode)
+        {
+            GlobalSettings.login_user = await x.Content.ReadFromJsonAsync<Person>();
+            nav.NavigateTo("/");
+        }
+        else
+        {
+            userExist = true;
+        }
+
+                
+
+    }
+
+}
+
+

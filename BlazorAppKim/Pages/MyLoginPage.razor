@@ -1,0 +1,68 @@
+﻿@page "/MyLoginPage"
+@inject NavigationManager nav
+@inject ApiService service
+
+<h3>התחבר לאתר</h3>
+ 
+
+@*<form>
+*@    <div class="mb-3">
+        <label for="exampleInputUsername" class="form-label">שם משתמש</label>
+        <input type="text" class="form-control" @bind=username>
+    </div>
+    <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label">סיסמא</label>
+        <input type="password" class="form-control"  @bind=pass>
+    </div>
+  
+    
+@*</form>
+*@<button class="btn btn-primary" @onclick="LogIn">התחבר</button>
+<style>
+    body{
+        background-color:palegoldenrod;
+    }
+</style>
+@if(userExist)
+{
+    <div class="alert alert-danger" role="alert">user not found , please register</div>
+}
+
+@code {
+
+
+    private string username;
+    private string pass;
+    private bool userExist;
+
+    protected override void OnInitialized()
+    {
+        userExist = false;
+    }
+
+    private async void  LogIn ()
+    {
+        try
+        {
+            var x = await service.LogIn(username, pass);
+            if (x.IsSuccessStatusCode)
+            {
+                GlobalSettings.login_user = await x.Content.ReadFromJsonAsync<Person>();
+                nav.NavigateTo("/AttractionPage");
+
+            }
+            else
+            {
+                userExist = true;
+            }
+        }
+        catch (Exception ex)
+        {
+            userExist = true;
+
+        }
+
+    }
+
+}
+
